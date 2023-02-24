@@ -20,3 +20,18 @@ Ajustar no arquivo tsconfig.json as propriedades
 
 ### Para compilar
 npx tsc        
+
+### Adicionando testes
+npm i -D jest @types/jest ts-node --save-dev
+npm i -D @swc/jest @swc/cli @swc/core
+
+npx jest --init
+
+Adicionar o seguinte bloco no arquivo jest.config.ts, logo abaixo a inicialização do objeto
+transform: {
+    "^.+\.(t|j)sx?$": ["@swc/jest"],
+    
+  },
+
+Para rodar os testes
+npm test  
