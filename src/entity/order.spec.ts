@@ -23,8 +23,8 @@ describe("Order unit testes", () => {
     });
 
     it("should calculate total", () => {
-        const item1 = new OrderItem("i1", "Name1", 100, 1);
-        const item2 = new OrderItem("i1", "Name1", 200, 1 );
+        const item1 = new OrderItem("i1", "Name1", 100, "pq", 1);
+        const item2 = new OrderItem("i1", "Name1", 200, "p2", 1 );
         const order = new Order("i1", "Name1", [item1]);
 
         let total = order.total();
@@ -33,5 +33,13 @@ describe("Order unit testes", () => {
         const order2 = new Order("i1", "Name1", [item1, item2]);
         total = order2.total();
         expect(total).toBe(300);
+    });
+
+    it("should throw error if the item qtde is less or equal 0", () => {        
+        expect(() => {
+            const item1 = new OrderItem("i1", "Name1", 100, "pq", 0);
+            const order = new Order("i1", "Name1", [item1]);
+        }).toThrowError("Quantity must be greater than zero");
+
     });
 })

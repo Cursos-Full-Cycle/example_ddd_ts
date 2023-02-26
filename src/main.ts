@@ -8,6 +8,6 @@ const address = new Address("Rua 1", 123, "Criciuma", "SC", "88802100")
 customer.setAddress(address);
 customer.activate();
 
-const item1 = new OrderItem("1", "Item 1", 10);
-const item2 = new OrderItem("2", "Item 2", 15);
-let order = new Order("1", customer._id, [item1, item2]);
+const item1 = new OrderItem("1", "Item 1", 10, "p1", 1);
+const item2 = new OrderItem("2", "Item 2", 15, "p2", 1);
+let order = new Order("1", "123", [item1, item2]);
