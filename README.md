@@ -35,3 +35,6 @@ transform: {
 
 Para rodar os testes
 npm test  
+
+### Instalação do UUID
+npm i uuid @types/uuid
