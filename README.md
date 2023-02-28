@@ -13,6 +13,9 @@ npx tslint --init
 Ajustar no arquivo tsconfig.json as propriedades
     "incremental": true,                              
     "outDir": "./dist",
+    "strictNullChecks": false,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     Adicionar o seguinte bloco no final da estrutura do compiler options
         "include": [
             "src/**/*.ts"
@@ -38,3 +41,12 @@ npm test
 
 ### Instalação do UUID
 npm i uuid @types/uuid
+
+### instalação do sequelize e banco de dados
+npm install sequelize reflect-metadata sequelize-typescript
+npm install sqlite3
+
+### Adicionar o arquivo
+.swcrc
+
+no projeto
