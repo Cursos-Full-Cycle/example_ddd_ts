@@ -33,6 +33,10 @@ export default class Customer {
         return this._id;
     }
 
+    get address() {
+        return this._address;
+    }
+
 
     changeName(name: string) {
 
@@ -56,7 +60,7 @@ export default class Customer {
         this._active = false;
     }
 
-    setAddress(address: Address) {
+    changeAddress(address: Address) {
         this._address = address;
     }
 

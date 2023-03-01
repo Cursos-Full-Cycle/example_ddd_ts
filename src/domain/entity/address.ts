@@ -6,7 +6,7 @@ export default class Address {
         _city: string;        
         
     
-        constructor(street: string, number: number, city: string, state: string, zip: string) {
+        constructor(street: string, number: number, city: string, zip: string) {
             this._street = street;
             this._number = number;
             this._city = city;            
@@ -32,4 +32,22 @@ export default class Address {
         toString() {
             return `${this._street} ${this._number}, ${this._city}, ${this._zip}`;
         }
+
+        get street() {
+            return this._street;
+        }
+
+        get number() {
+            return this._number;
+        }
+
+        get city() {
+            return this._city;
+        }
+
+        get zip() {
+            return this._zip;
+        }
+
+        
 }

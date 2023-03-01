@@ -4,8 +4,8 @@ import Order from "./domain/entity/order";
 import OrderItem from "./domain/entity/order_item";
 
 let customer = new Customer("123", "Fabio de Stefani");
-const address = new Address("Rua 1", 123, "Criciuma", "SC", "88802100")
-customer.setAddress(address);
+const address = new Address("Rua 1", 123, "Criciuma", "88802100")
+customer.changeAddress(address);
 customer.activate();
 
 const item1 = new OrderItem("1", "Item 1", 10, "p1", 1);
