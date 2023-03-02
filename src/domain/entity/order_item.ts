@@ -13,11 +13,23 @@ export default class OrderItem {
         this._productId = productId;
     }
 
-    getPrice() : number {
+    get price() : number {
         return this._price;
     }
 
-    quantity() : number {
+    get id(): string {
+        return this._id;
+    }
+
+    get name(): string {
+        return this._name;
+    }
+
+    get productId(): string {
+        return this._productId;
+    }
+
+    get quantity() : number {
         return this._quantity;
     }
 
