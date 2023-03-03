@@ -49,4 +49,9 @@ export default class Order {
     get items(): OrderItem[] {
         return this._items;
     }
+
+    changeCustomer(customerId: string) {
+        this._customerId = customerId;
+        this.validate();
+    }
 }

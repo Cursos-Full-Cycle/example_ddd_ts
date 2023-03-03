@@ -24,7 +24,20 @@ export default class OrderRepository implements OrderRepositoryInterface {
     }
 
     async update(entity: Order): Promise<void> {
-        throw new Error("Method not implemented.");
+        await OrderModel.update({
+            customer_id: entity.customerId,
+            total: entity.total(),
+            items: entity.items.map(item => ({
+                id: item.id,
+                product_id: item.productId,
+                name: item.name,
+                price: item.price,
+                quantity: item.quantity,
+            })),
+        },
+        {
+            where: {id: entity.id}            
+        });               
     }
 
     async findById(id: string): Promise<Order> {
@@ -38,7 +51,7 @@ export default class OrderRepository implements OrderRepositoryInterface {
                 rejectOnEmpty: true,
             });
         } catch (error) {
-            throw new Error("Customer not found");
+            throw new Error("Order not found");
         }
         const items = orderModel.items.map(orderItem => {
             let item = new OrderItem (
@@ -55,7 +68,25 @@ export default class OrderRepository implements OrderRepositoryInterface {
     }
 
     async findAll(): Promise<Order[]> {
-        throw new Error("Method not implemented.");
+        const orderModels = await OrderModel.findAll({
+            include: ["items"]
+        });
+
+        const orders = orderModels.map(orderModel => {
+            const items = orderModel.items.map(orderItem => {
+                let item = new OrderItem (
+                    orderItem.id,
+                    orderItem.name,
+                    orderItem.price,                
+                    orderItem.product_id,
+                    orderItem.quantity,
+                );
+                return item;
+            } );
+            const order = new Order(orderModel.id, orderModel.customer_id, items);
+            return order;
+        });
+        return orders;
         
     }
 }
