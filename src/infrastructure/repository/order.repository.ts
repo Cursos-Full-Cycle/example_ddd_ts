@@ -53,18 +53,10 @@ export default class OrderRepository implements OrderRepositoryInterface {
         } catch (error) {
             throw new Error("Order not found");
         }
-        const items = orderModel.items.map(orderItem => {
-            let item = new OrderItem (
-                orderItem.id,
-                orderItem.name,
-                orderItem.price,                
-                orderItem.product_id,
-                orderItem.quantity,
-            );
-            return item;
-        } );
+        const items = this.mapOrderItems(orderModel);
         const order = new Order(orderModel.id, orderModel.customer_id, items);
         return order;
+
     }
 
     async findAll(): Promise<Order[]> {
@@ -73,20 +65,24 @@ export default class OrderRepository implements OrderRepositoryInterface {
         });
 
         const orders = orderModels.map(orderModel => {
-            const items = orderModel.items.map(orderItem => {
-                let item = new OrderItem (
-                    orderItem.id,
-                    orderItem.name,
-                    orderItem.price,                
-                    orderItem.product_id,
-                    orderItem.quantity,
-                );
-                return item;
-            } );
+            const items = this.mapOrderItems(orderModel);
             const order = new Order(orderModel.id, orderModel.customer_id, items);
             return order;
         });
         return orders;
         
+    }
+
+    mapOrderItems(orderModel: OrderModel) {
+        return orderModel.items.map(orderItem => {
+            let item = new OrderItem(
+                orderItem.id,
+                orderItem.name,
+                orderItem.price,
+                orderItem.product_id,
+                orderItem.quantity
+            );
+            return item;
+        });
     }
 }

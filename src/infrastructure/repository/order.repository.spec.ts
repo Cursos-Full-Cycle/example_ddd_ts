@@ -32,23 +32,9 @@ describe("Order repository test", () => {
     });
 
     it("should create a new order", async () => {
-        const customerRepository = new CustomerRepository();
-        const customer = new Customer("1", "Customer 1");
-        const address = new Address("Street 1", 1, "City", "88802-100");
-        customer.changeAddress(address);
-        await customerRepository.create(customer);
-
-        const productRepository = new ProductRepository();
-        const product = new Product("1", "Product 1", 10);
-        await productRepository.create(product);
-
-        const orderItem = new OrderItem(
-            "1",
-            product.name,
-            product.price,
-            product.id,
-            2
-        );
+        const customer = await createCustomer("1", "Customer 1");
+        const product = await createProduct("1", "Product 1", 10);
+        const orderItem = createOrderItem("1", 2, product);
         const order = new Order("1", customer.id, [orderItem]);
 
         const orderRepository = new OrderRepository();
@@ -77,24 +63,10 @@ describe("Order repository test", () => {
 
     });
 
-    it("should update a order", async () => {
-        const customerRepository = new CustomerRepository();
-        const customer = new Customer("1", "Customer 1");
-        const address = new Address("Street 1", 1, "City", "88802-100");
-        customer.changeAddress(address);
-        await customerRepository.create(customer);
-
-        const productRepository = new ProductRepository();
-        const product = new Product("1", "Product 1", 10);
-        await productRepository.create(product);
-
-        const orderItem = new OrderItem(
-            "1",
-            product.name,
-            product.price,
-            product.id,
-            2
-        );
+    it("should update a order", async () => {        
+        const customer = await createCustomer("1", "Customer 1");
+        const product = await createProduct("1", "Product 1", 10);
+        const orderItem = createOrderItem("1", 2, product);        
         const order = new Order("1", customer.id, [orderItem]);
         
         const orderRepository = new OrderRepository();
@@ -105,7 +77,7 @@ describe("Order repository test", () => {
             include: ["items"],
           });
       
-          expect(orderModel.toJSON()).toStrictEqual({
+        expect(orderModel.toJSON()).toStrictEqual({
             id: order.id,
             customer_id: customer.id,
             total: order.total(),
@@ -120,16 +92,10 @@ describe("Order repository test", () => {
                 },
             ], 
         });  
-
-
-        const customer2 = new Customer("2", "Customer 2");
-        const address2 = new Address("Street 2", 2, "City", "88802-100");
-        customer2.changeAddress(address2);
-        await customerRepository.create(customer2);
+        const customer2 = await createCustomer("2", "Customer 2");
 
         order.changeCustomer(customer2.id);        
-        await orderRepository.update(order);
-        
+        await orderRepository.update(order);        
 
         const updateOrderModel = await OrderModel.findOne({
             where: {id: order.id},
@@ -154,24 +120,10 @@ describe("Order repository test", () => {
          
     });
 
-    it("should find a order ", async () => {
-        const customerRepository = new CustomerRepository();
-        const customer = new Customer("1", "Customer 1");
-        const address = new Address("Street 1", 1, "City", "88802-100");
-        customer.changeAddress(address);
-        await customerRepository.create(customer);
-
-        const productRepository = new ProductRepository();
-        const product = new Product("1", "Product 1", 10);
-        await productRepository.create(product);
-
-        const orderItem = new OrderItem(
-            "1",
-            product.name,
-            product.price,
-            product.id,
-            2
-        );
+    it("should find a order ", async () => {        
+        const customer = await createCustomer("1", "Customer 1");
+        const product = await createProduct("1", "Product 1", 10);
+        const orderItem = createOrderItem("1", 2, product);
         const order = new Order("1", customer.id, [orderItem]);
 
         const orderRepository = new OrderRepository();
@@ -189,45 +141,52 @@ describe("Order repository test", () => {
         }).rejects.toThrowError("Order not found");
     });
 
-    it("should find all orders ", async () => {
-        const customerRepository = new CustomerRepository();
-        const customer = new Customer("1", "Customer 1");
-        const address = new Address("Street 1", 1, "City", "88802-100");
-        customer.changeAddress(address);
-        await customerRepository.create(customer);
-
-        const productRepository = new ProductRepository();
-        const product = new Product("1", "Product 1", 10);
-        await productRepository.create(product);
-
-        const orderItem = new OrderItem(
-            "1",
-            product.name,
-            product.price,
-            product.id,
-            2
-        );
+    it("should find all orders ", async () => {        
+        const customer = await createCustomer("1", "Customer 1");
+        const product = await createProduct("1", "Product 1", 10);
+        const orderItem = createOrderItem("1", 2, product);        
         const order = new Order("1", customer.id, [orderItem]);
+        
         const orderRepository = new OrderRepository();
         await orderRepository.create(order);
 
-
-        const orderItem2 = new OrderItem(
-            "2",
-            product.name,
-            product.price,
-            product.id,
-            3
-        );
+        const orderItem2 = createOrderItem("2", 3, product);        
         const order2 = new Order("2", customer.id, [orderItem2]);
+        
         await orderRepository.create(order2);
 
         const ordersFound = await orderRepository.findAll();
-        // const costumers = await customerRepository.findAll();
-
+        
         expect(ordersFound).toHaveLength(2);
         expect(ordersFound).toContainEqual(order);
         expect(ordersFound).toContainEqual(order2);
     });
 
+    async function createCustomer(id: string, name: string) {
+        const customerRepository = new CustomerRepository();
+        const customer = new Customer(id, name);
+        const address = new Address("Street 1", 1, "City", "88802-100");
+        customer.changeAddress(address);
+        await customerRepository.create(customer);
+        return customer;
+    }
+
+    async function createProduct(id: string, name: string, price: number) {
+        const productRepository = new ProductRepository();
+        const product = new Product(id, name, price);
+        await productRepository.create(product);
+        return product;
+    }
+
+    function createOrderItem(id: string, quantity: number, product: Product) {
+        return new OrderItem(
+            id,
+            product.name,
+            product.price,
+            product.id,
+            quantity
+        );
+    }
+
 });
+
