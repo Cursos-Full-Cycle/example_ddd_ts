@@ -1,4 +1,4 @@
-import Address from "./domain/customers/entity/address";
+import Address from "./domain/customers/value-object/address";
 import Customer from "./domain/customers/entity/customer";
 import Order from "./domain/orders/entity/order";
 import OrderItem from "./domain/orders/entity/order_item";

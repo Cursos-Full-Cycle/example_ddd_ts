@@ -1,5 +1,5 @@
 import EventDispatcher from "../../shared/event/event-dispatcher";
-import Address from "../entity/address";
+import Address from "../value-object/address";
 import CustomerAddressChangedEvent from "../event/customer-address-changed.event";
 import SendConsoleLogWhenAddressCustomerIsChangeddHandler from "./send-console-log-when-address-customer-is-changeed.handler";
 
